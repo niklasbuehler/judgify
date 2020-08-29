@@ -37,7 +37,7 @@ function getAccessToken() {
 // Toggle sign-in state.
 function authorize() {
 		if (sessionStorage.getItem("accessToken") === null) {
-				$(location).attr('href', 'https://accounts.spotify.com/authorize?client_id=33b5c70099024747b71c4dcb160d51ba&scope=user-top-read&response_type=token&redirect_uri=https://niklasbuehler.github.io/spodiffy');
+				$(location).attr('href', 'https://accounts.spotify.com/authorize?client_id=33b5c70099024747b71c4dcb160d51ba&scope=user-top-read&response_type=token&redirect_uri=https://niklasbuehler.github.io/judgify');
 		} else {
 				sessionStorage.clear();
 				location.href = "index.html";
