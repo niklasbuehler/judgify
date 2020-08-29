@@ -4,7 +4,7 @@ $("#content").hide();
 
 var timeframe = "medium_term";
 var limit = 20;
-var type = "artists";
+var itemtype = "artists";
 
 function populateView() {
 		getAccessToken();
@@ -50,11 +50,11 @@ function loadData() {
 		clearTable();
 
 		$.ajax({
-				url: "https://api.spotify.com/v1/me/top/"+type+"?time_range="+timeframe+"&limit="+limit,
+				url: "https://api.spotify.com/v1/me/top/"+itemtype+"?time_range="+timeframe+"&limit="+limit,
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
-						if (type === "artists") {
+						if (itemtype === "artists") {
 							data.items.forEach(artist => addArtistToTable(artist));
 							var total_rarity = determineArtistRarity(data.items);
 							setRarity(total_rarity);
@@ -129,7 +129,7 @@ function determineArtistRarity(items) {
 
 function determineSongRarity(items) {
 		var rarity = 0;
-		items.forEach(item => rarity+=(100-item.popularity) * (item.artists[0].rarity/100));
+		items.forEach(item => rarity+=(100-item.popularity) * ((100-item.artists[0].popularity)/100));
 		return rarity/items.length;
 }
 function setRarity(total_rarity) {
