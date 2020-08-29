@@ -61,8 +61,7 @@ function loadData() {
 							$("#content").show();
 						} else {
 							data.items.forEach(song => addSongToTable(song));
-							var total_rarity = determineSongRarity(data.items);
-							setRarity(total_rarity);
+							setRarity();
 							$("#content").show();
 						}
 				}
@@ -127,21 +126,24 @@ function determineArtistRarity(items) {
 		return rarity/items.length;
 }
 
-function determineSongRarity(items) {
+function determineCombinedRarity(songs, artists) {
+		zip = (songs, artists) => songs.map((k, i) => [k, artists[i]]);
 		var rarity = 0;
-		items.forEach(item => rarity+=(100-item.popularity) * ((100-getArtist(item.artists[0].id).popularity)/100));
-		return rarity/items.length;
+		zip.forEach((s, a) => rarity+=(100-s.popularity) * ((100-a.popularity)/100));
+		return rarity/songs.length;
 }
 
-function getArtist(artistId) {
+function setRarity(songs) {
+		var artistIDs = songs.map(song => song.artists[0].id);
 		$.ajax({
-			url: 'https://api.spotify.com/v1/artists/'+artistId,
+			url: 'https://api.spotify.com/v1/artists/'+artistIDs.toString(),
 			type: 'GET',
 			headers: {
 				'Authorization' : 'Bearer ' + access_token
 			},
 			success: function(data) {
-				return data;
+					var total_rarity = determineCombinedRarity(songs, data);
+					setRarity(total_rarity);
 			}
 		});
 }
