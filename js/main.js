@@ -39,7 +39,7 @@ function authorize() {
 				$(location).attr('href', 'https://accounts.spotify.com/authorize?client_id=33b5c70099024747b71c4dcb160d51ba&scope=user-top-read&response_type=token&redirect_uri=https://niklasbuehler.github.io/spodiffy');
 		} else {
 				sessionStorage.clear();
-				location.reload();
+				location.href = "index.html";
 		}
 }
 
