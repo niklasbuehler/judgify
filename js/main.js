@@ -4,6 +4,7 @@ $("#content").hide();
 
 var timeframe = "medium_term";
 var limit = 20;
+var type = "artists";
 
 function populateView() {
 		getAccessToken();
@@ -49,14 +50,21 @@ function loadData() {
 		clearTable();
 
 		$.ajax({
-				url: "https://api.spotify.com/v1/me/top/artists?time_range="+timeframe+"&limit="+limit,
+				url: "https://api.spotify.com/v1/me/top/"+type+"?time_range="+timeframe+"&limit="+limit,
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
-						data.items.forEach(artist => addToTable(artist));
-						var total_rarity = determineRarity(data.items);
-						setRarity(total_rarity);
-						$("#content").show();
+						if (type === "artists") {
+							data.items.forEach(artist => addToTable(artist));
+							var total_rarity = determineRarity(data.items);
+							setRarity(total_rarity);
+							$("#content").show();
+						} else {
+							data.items.forEach(song => addSongToTable(song));
+							var total_rarity = determineRarity(data.items);
+							setRarity(total_rarity);
+							$("#content").show();
+						}
 				}
 		});
 }
@@ -65,7 +73,31 @@ function clearTable() {
 		$("#table").html('<thead class="thead-dark"><tr><th scope="col">Picture</th><th scope="col">Name</th><th scope="col">Rarity</th></tr></thead>');
 }
 
-function addToTable(artist) {
+function addSongToTable(song) {
+		var table = document.getElementById('table');
+		var tr = document.createElement('tr');
+		var img = "<img src='"+song.album.images[0]["url"]+"' class='artist-image rounded-circle'>";
+		var name = "<a target='_blank' href='"+song.external_urls["spotify"]+"'>"+song.artists[0].name+" - " +song.name+"</a>";
+
+		var pop_color = '#191414';
+		var badge = '';
+		if (song.popularity < 30) {
+				pop_color = '#ff0000';
+				badge = " <span class='badge badge-dark'>Extremely rare</span>"
+		} else if (song.popularity < 50) {
+				pop_color = '#dc3545';
+				badge = " <span class='badge badge-danger'>Super rare</span>";
+		} else if (song.popularity < 60) {
+				pop_color = '#ffc107';
+				badge = " <span class='badge badge-warning'>Rare</span>";
+		}
+		var popularity = '<div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="background-color: '+pop_color+'; width: '+(100-song.popularity)+'%;" aria-valuenow="'+(100-song.popularity)+'" aria-valuemin="0" aria-valuemax="100">'+(100-song.popularity)+'</div></div>' + badge;
+
+		tr.innerHTML = '<td>' + [img,name,popularity].join('</td><td>') + '</td>';
+		table.appendChild(tr);
+}
+
+function addArtistToTable(artist) {
 		var table = document.getElementById('table');
 		var tr = document.createElement('tr');
 		var img = "<img src='"+artist.images[0]["url"]+"' class='artist-image rounded-circle'>";
@@ -89,10 +121,10 @@ function addToTable(artist) {
 		table.appendChild(tr);
 }
 
-function determineRarity(artists) {
+function determineRarity(items) {
 		var rarity = 0;
-		artists.forEach(artist => rarity+=(100-artist.popularity));
-		return rarity/artists.length;
+		items.forEach(item => rarity+=(100-item.popularity));
+		return rarity/items.length;
 }
 
 function setRarity(total_rarity) {

@@ -49,8 +49,9 @@
 		<p class="lead">A totally meaningful representation of your taste in music. At least you'll know how <i>basic</i>™ you are.</p>
 
 		<div class="jumbotron" id="content" style="background-color: #f9fcff">
+				Judge based on
+				<br>
 				<div class="dropdown d-inline">
-				  Show
 				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Amount
 				  </button>
@@ -60,9 +61,17 @@
 					<a class="dropdown-item" href="#" onclick="limit=20; loadData()">Top 20</a>
 					<a class="dropdown-item" href="#" onclick="limit=50; loadData()">Top 50</a>
 				  </div>
+				</div>
+				<div class="dropdown d-inline">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Type
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+					<a class="dropdown-item" href="#" onclick="type='artists'; loadData()">Artists</a>
+					<a class="dropdown-item" href="#" onclick="type='tracks'; loadData()">Tracks</a>
 				  </div>
-				  over
-				  <div class="dropdown d-inline">
+				</div>
+				<div class="dropdown d-inline">
 				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Timeframe
 				  </button>
