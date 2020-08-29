@@ -129,7 +129,7 @@ function determineArtistRarity(items) {
 
 function determineSongRarity(items) {
 		var rarity = 0;
-		items.forEach(item => rarity+=(100-item.popularity) * ((100-item.artists[0].popularity)/100));
+		items.forEach(item => rarity+=(100-item.popularity));
 		return rarity/items.length;
 }
 function setRarity(total_rarity) {
