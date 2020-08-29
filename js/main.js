@@ -39,6 +39,7 @@ function authorize() {
 				$(location).attr('href', 'https://accounts.spotify.com/authorize?client_id=33b5c70099024747b71c4dcb160d51ba&scope=user-top-read&response_type=token&redirect_uri=https://niklasbuehler.github.io/spodiffy');
 		} else {
 				sessionStorage.clear();
+				location.reload();
 		}
 }
 
@@ -111,8 +112,9 @@ function setRarity(total_rarity) {
 			description = 'Extreme rare';
 			color = "#dc3545";
 		}
+		$("#rarity").html("<strong style='color: "+color+"'>"+total_rarity+"%</strong>");
 		$("#description").html(description);
-		$("#rarity").html('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+total_rarity+'" aria-valuemin="0" aria-valuemax="100" style="width: '+total_rarity+'%; background-color: '+color+'">'+total_rarity+'</div>');
+		$("#rarity_bar").html('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+total_rarity+'" aria-valuemin="0" aria-valuemax="100" style="width: '+total_rarity+'%; background-color: '+color+'">'+total_rarity+'</div>');
 }
 
 function logOut() {
