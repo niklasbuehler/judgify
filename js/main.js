@@ -56,12 +56,12 @@ function loadData() {
 				}, success: function(data){
 						if (type === "artists") {
 							data.items.forEach(artist => addArtistToTable(artist));
-							var total_rarity = determineRarity(data.items);
+							var total_rarity = determineArtistRarity(data.items);
 							setRarity(total_rarity);
 							$("#content").show();
 						} else {
 							data.items.forEach(song => addSongToTable(song));
-							var total_rarity = determineRarity(data.items);
+							var total_rarity = determineSongRarity(data.items);
 							setRarity(total_rarity);
 							$("#content").show();
 						}
@@ -121,12 +121,17 @@ function addArtistToTable(artist) {
 		table.appendChild(tr);
 }
 
-function determineRarity(items) {
+function determineArtistRarity(items) {
 		var rarity = 0;
 		items.forEach(item => rarity+=(100-item.popularity));
 		return rarity/items.length;
 }
 
+function determineSongRarity(items) {
+		var rarity = 0;
+		items.forEach(item => rarity+=(100-item.popularity) * (item.artists[0].rarity/100));
+		return rarity/items.length;
+}
 function setRarity(total_rarity) {
 		var description = "???";
 		var color = "#191414";
