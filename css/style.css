@@ -1,0 +1,16 @@
+.artist-image {
+	width: 100px;
+	height: 100px;
+}
+
+body {
+	color: #191414;
+}
+
+.highlight {
+	color: #1DB954;
+}
+
+.bg-dark {
+	background-color: #191414!important;
+}
