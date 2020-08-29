@@ -10,9 +10,9 @@ function getAccessToken() {
 
 		if (access_token !== null) return;
 
-		if (window.location.search) {
+		if (window.location.hash) {
 				var url = new URL(window.location.href);
-				var access_token = url.searchParams.get("access_token");
+				access_token = location.hash.match(new RegExp('access_token=([^&]*)'))[1];
 
 				console.log("Access Token: " + access_token);
 
