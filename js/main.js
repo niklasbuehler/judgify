@@ -75,7 +75,7 @@ function addToTable(artist) {
 		var badge = '';
 		if (artist.popularity < 30) {
 				pop_color = '#ff0000';
-				badge = " <span class='badge badge-dark'>Extreme rare</span>"
+				badge = " <span class='badge badge-dark'>Extremely rare</span>"
 		} else if (artist.popularity < 50) {
 				pop_color = '#dc3545';
 				badge = " <span class='badge badge-danger'>Super rare</span>";
@@ -98,23 +98,21 @@ function determineRarity(artists) {
 function setRarity(total_rarity) {
 		var description = "???";
 		var color = "#191414";
-		if (total_rarity < 10) {
-			description = "Deaf?";
-		} else if (total_rarity < 20) {
+		giif (total_rarity < 10) {
 			description = "Chart-stormer";
-		} else if (total_rarity < 30) {
+		} else if (total_rarity < 20) {
 			description = '"I listen to everything"™';
-		} else if (total_rarity < 40) {
-			description = 'Legit';
+		} else if (total_rarity < 30) {
+			description = 'Sonority Gourmet';
 			color = "#1DB954";
-		} else if (total_rarity < 50) {
-			description = 'Rare';
+		} else if (total_rarity < 40) {
+			description = 'Soundcloud Scout';
 			color = "#ffc107"
-		} else if (total_rarity < 60) {
-			description = 'Super Rare';
+		} else if (total_rarity < 50) {
+			description = 'Playlist Jedi';
 			color = "#dc3545"
 		} else {
-			description = 'Extreme rare';
+			description = 'AUX Emperor';
 			color = "#ff0000";
 		}
 		$("#rarity").html("<strong style='color: "+color+"'>"+total_rarity+"%</strong>");
