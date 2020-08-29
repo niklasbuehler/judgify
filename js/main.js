@@ -44,13 +44,14 @@ function authorize() {
 
 function loadData() {
 		if (access_token === null) return;
+		
+		clearTable();
 
 		$.ajax({
 				url: "https://api.spotify.com/v1/me/top/artists?time_range="+timeframe+"&limit="+limit,
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
-						clearTable();
 						data.items.forEach(artist => addToTable(artist));
 						var total_rarity = determineRarity(data.items);
 						setRarity(total_rarity);
