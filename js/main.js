@@ -1,5 +1,6 @@
 var access_token = null;
 $("#alert").hide();
+$("#content").hide();
 
 function populateView() {
 		getAccessToken();
@@ -29,9 +30,12 @@ function getAccessToken() {
 		}
 }
 
+// Toggle sign-in state.
 function authorize() {
 		if (sessionStorage.getItem("accessToken") === null) {
 				$(location).attr('href', 'https://accounts.spotify.com/authorize?client_id=33b5c70099024747b71c4dcb160d51ba&scope=user-top-read&response_type=token&redirect_uri=https://niklasbuehler.github.io/spodiffy');
+		} else {
+				sessionStorage.clear();
 		}
 }
 
@@ -39,13 +43,14 @@ function loadData() {
 		if (access_token === null) return;
 
 		$.ajax({
-				url: "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=50",
+				url: "https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=50",
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
 						data.items.forEach(artist => addToTable(artist));
 						var total_rarity = determineRarity(data.items);
 						setRarity(total_rarity);
+						$("#content").show();
 				}
 		});
 }
@@ -81,5 +86,26 @@ function determineRarity(artists) {
 }
 
 function setRarity(total_rarity) {
-	alert("Total Rarity: "+total_rarity);
+		var description = "???";
+		var color = "#191414";
+		if (total_rarity < 30) {
+			description = "Chart-stormer";
+		} else if (total_rarity < 50) {
+			description = '"I listen to everything"';
+		} else if (total_rarity < 75) {
+			description = 'Legit';
+			color = "#1DB954";
+		} else if (total_rarity < 90) {
+			description = 'Super Rare';
+			color = "#ffc107"
+		} else {
+			description = 'Extreme rare';
+			color = "#dc3545";
+		}
+		$("#description").html(description);
+		$("#rarity").html('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+total_rarity+'" aria-valuemin="0" aria-valuemax="100" style="width: '+total_rarity+'%; background-color: '+color+'">'+total_rarity+'</div>');
+}
+
+function logOut() {
+	sessionStorage.clear();
 }

@@ -34,10 +34,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" onclick="authorize()">Sign in</a>
+            <a class="nav-link" href="#" onclick="authorize()">Sign in/out</a>
           </li>
         </ul>
       </div>
@@ -48,17 +45,25 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-center">
-		<h1 class="mt-5"><strong class="highlight">Rarity</strong> of your Spotify Account</h1>
-		<p class="lead">Determine the rarity of your taste in music.</p>
-		<table id="table" class="table">
-				<thead class="thead-dark">
-						<tr>
-								<th scope="col">Picture</th>
-								<th scope="col">Name</th>
-								<th scope="col">Rarity</th>
-						</tr>
-				</thead>
-		</table>
+		<h1 class="mt-5">How <strong class="highlight">rare</strong> is your Spotify?</h1>
+		<p class="lead">A totally meaningful representation of your taste in music. At least you'll know how <i>basic</i>™ you are.</p>
+
+		<div class="jumbotron" id="content">
+				<h1 class="display-4" id="description">???</h1>
+				<div class="progress" id="rarity">
+				</div>
+				<br>
+
+				<table id="table" class="table">
+						<thead class="thead-dark">
+								<tr>
+										<th scope="col">Picture</th>
+										<th scope="col">Name</th>
+										<th scope="col">Rarity</th>
+								</tr>
+						</thead>
+				</table>
+		</div>
 		<div class="alert alert-primary" role="alert" id="alert">
 				Hey there! In order to rate your taste in music, you'll have to <a href="#" onclick="authorize()">sign in with your Spotify account</a>.
 		</div>
