@@ -1,5 +1,52 @@
 var access_token = null;
-var upTokenTime = 24*60*60;
+
+function populateView() {
+		getAccessToken();
+		loadData();
+}
+
+function getAccessToken() {
+		access_token = sessionStorage.getItem("accessToken");
+
+		if (access_token !== null) return;
+
+		if (window.location.search) {
+				var url = new URL(window.location.href);
+				var access_token = url.searchParams.get("access_token");
+
+				console.log("Access Token: " + access_token);
+
+				/* If first visit or regaining token, store it in session. */    
+				if (typeof(Storage) !== "undefined") {
+						/* Store the access token */
+						sessionStorage.setItem("accessToken", access_token); // store token.
+				} else {
+						alert("Your browser does not support web storage...\nPlease try another browser.");
+				}
+		} else {
+				alert("Please connect your Spotify account. Click on 'Authorize' to start the sign in process.");
+		}
+}
+
+function authorize() {
+		if (sessionStorage.getItem("accessToken") === null) {
+				$(location).attr('href', 'https://accounts.spotify.com/authorize?client_id=33b5c70099024747b71c4dcb160d51ba&scope=user-top-read&response_type=access_token&redirect_uri=https://niklasbuehler.github.io/spodiffy');
+		}
+}
+
+function loadData() {
+		if (access_token === null) return;
+
+		$.ajax({
+				url: "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=50&offset=0",
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
+				}, success: function(data){
+						var artists;
+						data.items.forEach(artist => addToTable(artist));
+				}
+		});
+}
 
 function addToTable(artist) {
 		console.log(artist)
@@ -24,103 +71,4 @@ function addToTable(artist) {
 
 		tr.innerHTML = '<td>' + [img,name,popularity].join('</td><td>') + '</td>';
 		table.appendChild(tr);
-}
-
-function implicitGrantFlow() {
-		/* If access token has been assigned in the past and is not expired, no request required. */
-		if (sessionStorage.getItem("accessToken") !== null &&
-				sessionStorage.getItem("tokenTimeStamp") !== null &&
-				upTokenTime < tokenExpireSec) {
-				var timeLeft = (tokenExpireSec - upTokenTime);
-				console.log("Token still valid: " + Math.floor(timeLeft / 60) + " minutes left.");
-
-				/* Navigate to the home page. */
-				$(location).attr('href', "index.html");
-		} else {
-				console.log("Token expired or never found, getting new token.");
-				$(location).attr('href', 'https://accounts.spotify.com/authorize?client_id=33b5c70099024747b71c4dcb160d51ba&scope=user-top-read&response_type=code&redirect_uri=https://niklasbuehler.github.io/spodiffy');
-				//$.ajax({
-				//		url: 'https://accounts.spotify.com/authorize',
-				//		type: 'GET',
-				//		contentType: 'application/json',
-				//		data: {
-				//				client_id: "33b5c70099024747b71c4dcb160d51ba",
-				//				redirect_uri: "https://niklasbuehler.github.io/spodiffy",
-				//				scope: "user-top-read",
-				//				response_type: "code",
-				//				//state: state
-				//		}
-				//}).done(function callback(response) {
-				//		/* Redirect user to home page */
-				//		console.log("Sucessfully fetched token.");
-				//		//$(location).attr('href', this.url);
-
-				//}).fail(function (error) {
-				//		/* Since we cannot modify the server, we will always fail. */
-				//		console.log("Error fetching token: " + error.status);
-				//		console.log(this.url);
-				//		//$(location).attr('href', this.url);
-				//});
-		}
-}
-
-function getAccessToken() {
-
-		access_token = sessionStorage.getItem("accessToken");
-
-		if (access_token === null) {
-				if (window.location.search) {
-						console.log('Getting Access Token');
-
-						var search = window.location.search.substring(1);
-						var accessString = search.indexOf("&");
-
-						/* 13 because that bypasses 'access_token' string */
-						access_token = search.substring(13, accessString);
-						console.log("Access Token: " + access_token);
-
-						/* If first visit or regaining token, store it in session. */    
-						if (typeof(Storage) !== "undefined") {
-								/* Store the access token */
-								sessionStorage.setItem("accessToken", access_token); // store token.
-
-								/* To see if we need a new token later. */
-								sessionStorage.setItem("tokenTimeStamp", secondsSinceEpoch);
-
-								/* Token expire time */
-								sessionStorage.setItem("tokenExpireStamp", secondsSinceEpoch + 3600);
-								console.log("Access Token Time Stamp: "
-										+ sessionStorage.getItem("tokenTimeStamp")
-										+ " seconds\nOR: " + dateNowMS + "\nToken expires at: "
-										+ sessionStorage.getItem("tokenExpireStamp"));
-						} else {
-								alert("Your browser does not support web storage...\nPlease try another browser.");
-						}
-				} else {
-						console.log('URL has no params; no access token');
-				}
-		} else if (upTokenTime >= tokenExpireSec) {
-				console.log("Getting a new acess token... Redirecting");
-
-				/* Remove session vars so we dont have to check in implicitGrantFlow */
-				sessionStorage.clear();
-
-				$(location).attr('href', 'index.html'); // Get another access token, redirect back.
-
-		} else {
-				var timeLeft = (tokenExpireSec - upTokenTime);
-				console.log("Token still valid: " + Math.floor(timeLeft / 60) + " minutes left.");
-		}
-}
-
-function loadData() {
-		$.ajax({
-				url: "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=50&offset=0",
-				beforeSend: function(xhr) {
-						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
-				}, success: function(data){
-						var artists;
-						data.items.forEach(artist => addToTable(artist));
-				}
-		});
 }
