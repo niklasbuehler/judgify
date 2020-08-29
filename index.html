@@ -49,6 +49,16 @@
 		<p class="lead">A totally meaningful representation of your taste in music. At least you'll know how <i>basic</i>™ you are.</p>
 
 		<div class="jumbotron" id="content">
+				<div class="dropdown">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Timeframe
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a class="dropdown-item" href="#" onclick="loadData('short_term')">Short-term</a>
+					<a class="dropdown-item" href="#" onclick="loadData('medium_term')">Medium-term</a>
+					<a class="dropdown-item" href="#" onclick="loadData('long_term')">Long-term</a>
+				  </div>
+				</div>
 				<h1 class="display-4" id="description">???</h1>
 				<div class="progress" id="rarity">
 				</div>

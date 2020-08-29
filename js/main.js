@@ -4,7 +4,7 @@ $("#content").hide();
 
 function populateView() {
 		getAccessToken();
-		loadData();
+		loadData("medium_term");
 }
 
 function getAccessToken() {
@@ -39,20 +39,25 @@ function authorize() {
 		}
 }
 
-function loadData() {
+function loadData(timeframe) {
 		if (access_token === null) return;
 
 		$.ajax({
-				url: "https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=50",
+				url: "https://api.spotify.com/v1/me/top/artists?time_range="+timeframe+"&limit=50",
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
+						clearTable();
 						data.items.forEach(artist => addToTable(artist));
 						var total_rarity = determineRarity(data.items);
 						setRarity(total_rarity);
 						$("#content").show();
 				}
 		});
+}
+
+function clearTable() {
+		$("#table").html('<thead class="thead-dark"><tr><th scope="col">Picture</th><th scope="col">Name</th><th scope="col">Rarity</th></tr></thead>');
 }
 
 function addToTable(artist) {
