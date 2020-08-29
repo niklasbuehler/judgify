@@ -50,15 +50,27 @@
 
 		<div class="jumbotron" id="content">
 				<div class="dropdown">
+				  Show
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Amount
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a class="dropdown-item" href="#" onclick="limit=5; loadData()">Top 5</a>
+					<a class="dropdown-item" href="#" onclick="limit=10; loadData()">Top 10</a>
+					<a class="dropdown-item" href="#" onclick="limit=20; loadData()">Top 20</a>
+					<a class="dropdown-item" href="#" onclick="limit=50; loadData()">Top 50</a>
+				  </div>
+				  over
 				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Timeframe
 				  </button>
 				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					<a class="dropdown-item" href="#" onclick="loadData('short_term')">Short-term</a>
-					<a class="dropdown-item" href="#" onclick="loadData('medium_term')">Medium-term</a>
-					<a class="dropdown-item" href="#" onclick="loadData('long_term')">Long-term</a>
+					<a class="dropdown-item" href="#" onclick="timeframe='short_term'; loadData()">Short-term</a>
+					<a class="dropdown-item" href="#" onclick="timeframe='medium_term'; loadData()">Medium-term</a>
+					<a class="dropdown-item" href="#" onclick="timeframe='long_term'; loadData()">Long-term</a>
 				  </div>
 				</div>
+				<br>
 				<h1 class="display-4" id="description">???</h1>
 				<div class="progress" id="rarity">
 				</div>

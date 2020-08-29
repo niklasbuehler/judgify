@@ -2,9 +2,12 @@ var access_token = null;
 $("#alert").hide();
 $("#content").hide();
 
+var timeframe = "medium_term";
+var limit = 20;
+
 function populateView() {
 		getAccessToken();
-		loadData("medium_term");
+		loadData();
 }
 
 function getAccessToken() {
@@ -39,11 +42,11 @@ function authorize() {
 		}
 }
 
-function loadData(timeframe) {
+function loadData() {
 		if (access_token === null) return;
 
 		$.ajax({
-				url: "https://api.spotify.com/v1/me/top/artists?time_range="+timeframe+"&limit=50",
+				url: "https://api.spotify.com/v1/me/top/artists?time_range="+timeframe+"&limit="+limit,
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
