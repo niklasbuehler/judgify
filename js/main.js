@@ -129,9 +129,23 @@ function determineArtistRarity(items) {
 
 function determineSongRarity(items) {
 		var rarity = 0;
-		items.forEach(item => rarity+=(100-item.popularity));
+		items.forEach(item => rarity+=(100-item.popularity) * ((100-getArtist(item.artists[0].id).popularity)/100));
 		return rarity/items.length;
 }
+
+function getArtist(artistId) {
+		$.ajax({
+			url: 'https://api.spotify.com/v1/artists/'+artistId,
+			type: 'GET',
+			headers: {
+				'Authorization' : 'Bearer ' + access_token
+			},
+			success: function(data) {
+				return data;
+			}
+		});
+}
+
 function setRarity(total_rarity) {
 		var description = "???";
 		var color = "#191414";
