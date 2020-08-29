@@ -98,19 +98,24 @@ function determineRarity(artists) {
 function setRarity(total_rarity) {
 		var description = "???";
 		var color = "#191414";
-		if (total_rarity < 30) {
+		if (total_rarity < 10) {
+			description = "Deaf?";
+		} else if (total_rarity < 20) {
 			description = "Chart-stormer";
-		} else if (total_rarity < 50) {
-			description = '"I listen to everything"';
-		} else if (total_rarity < 75) {
+		} else if (total_rarity < 30) {
+			description = '"I listen to everything"™';
+		} else if (total_rarity < 40) {
 			description = 'Legit';
 			color = "#1DB954";
-		} else if (total_rarity < 90) {
-			description = 'Super Rare';
+		} else if (total_rarity < 50) {
+			description = 'Rare';
 			color = "#ffc107"
+		} else if (total_rarity < 60) {
+			description = 'Super Rare';
+			color = "#dc3545"
 		} else {
 			description = 'Extreme rare';
-			color = "#dc3545";
+			color = "#ff0000";
 		}
 		$("#rarity").html("<strong style='color: "+color+"'>"+total_rarity+"%</strong>");
 		$("#description").html(description);
