@@ -1,4 +1,5 @@
 var access_token = null;
+$("#alert").hide();
 
 function populateView() {
 		getAccessToken();
@@ -10,7 +11,7 @@ function getAccessToken() {
 
 		if (access_token !== null) return;
 
-		if (window.location.hash !== null) {
+		if (window.location.hash !== "") {
 				var url = new URL(window.location.href);
 				access_token = location.hash.match(new RegExp('access_token=([^&]*)'))[1];
 
@@ -24,7 +25,7 @@ function getAccessToken() {
 						alert("Your browser does not support web storage...\nPlease try another browser.");
 				}
 		} else {
-				alert("Please connect your Spotify account. Click on 'Authorize' to start the sign in process.");
+				$("#alert").show();
 		}
 }
 
@@ -38,12 +39,14 @@ function loadData() {
 		if (access_token === null) return;
 
 		$.ajax({
-				url: "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=50&offset=0",
+				url: "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=50",
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
 						var artists;
 						data.items.forEach(artist => addToTable(artist));
+						var total_rarity = determineRarity(artists);
+						setRarity(total_rarity);
 				}
 		});
 }
@@ -71,4 +74,14 @@ function addToTable(artist) {
 
 		tr.innerHTML = '<td>' + [img,name,popularity].join('</td><td>') + '</td>';
 		table.appendChild(tr);
+}
+
+function determineRarity(artists) {
+		var rarity = 0;
+		artists.forEach(artist => rarity+=(100-artist.popularity));
+		return rarity/artists.length;
+}
+
+function setRarity(total_rarity) {
+	alert("Total Rarity: "+total_rarity);
 }
