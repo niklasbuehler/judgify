@@ -98,7 +98,7 @@ function determineRarity(artists) {
 function setRarity(total_rarity) {
 		var description = "???";
 		var color = "#191414";
-		giif (total_rarity < 10) {
+		if (total_rarity < 10) {
 			description = "Chart-stormer";
 		} else if (total_rarity < 20) {
 			description = '"I listen to everything"™';
