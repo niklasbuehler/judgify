@@ -55,7 +55,7 @@ function loadData() {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
 						if (type === "artists") {
-							data.items.forEach(artist => addToTable(artist));
+							data.items.forEach(artist => addArtistToTable(artist));
 							var total_rarity = determineRarity(data.items);
 							setRarity(total_rarity);
 							$("#content").show();
