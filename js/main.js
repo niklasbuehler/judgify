@@ -10,7 +10,7 @@ function getAccessToken() {
 
 		if (access_token !== null) return;
 
-		if (window.location.hash) {
+		if (window.location.hash !== null) {
 				var url = new URL(window.location.href);
 				access_token = location.hash.match(new RegExp('access_token=([^&]*)'))[1];
 
