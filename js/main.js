@@ -43,16 +43,14 @@ function loadData() {
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader("Authorization", "Bearer "+access_token)
 				}, success: function(data){
-						var artists;
 						data.items.forEach(artist => addToTable(artist));
-						var total_rarity = determineRarity(artists);
+						var total_rarity = determineRarity(data.items);
 						setRarity(total_rarity);
 				}
 		});
 }
 
 function addToTable(artist) {
-		console.log(artist)
 		var table = document.getElementById('table');
 		var tr = document.createElement('tr');
 		var img = "<img src='"+artist.images[0]["url"]+"' class='artist-image rounded-circle'>";
