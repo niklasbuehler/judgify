@@ -71,10 +71,10 @@ function addToTable(artist) {
 		var img = "<img src='"+artist.images[0]["url"]+"' class='artist-image rounded-circle'>";
 		var name = "<a target='_blank' href='"+artist.external_urls["spotify"]+"'>"+artist.name+"</a>";
 
-		var pop_color = '#1DB954';
+		var pop_color = '#191414';
 		var badge = '';
 		if (artist.popularity < 30) {
-				pop_color = '#343a40';
+				pop_color = '#ff0000';
 				badge = " <span class='badge badge-dark'>Extreme rare</span>"
 		} else if (artist.popularity < 50) {
 				pop_color = '#dc3545';
